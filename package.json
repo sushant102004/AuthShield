@@ -4,7 +4,7 @@
   "description": "A secure and scalable identity and session management solution for web applications, ensuring robust authentication and safeguarding user sessions.",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start" : "nodemon app.ts"
   },
   "repository": {
     "type": "git",
