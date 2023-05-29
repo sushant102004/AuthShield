@@ -4,7 +4,7 @@
   "description": "A secure and scalable identity and session management solution for web applications, ensuring robust authentication and safeguarding user sessions.",
   "main": "app.ts",
   "scripts": {
-    "start" : "nodemon app.ts"
+    "start": "nodemon app.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "@types/express": "^4.17.17",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^7.2.1",
     "winston": "^3.9.0"
   }
 }
