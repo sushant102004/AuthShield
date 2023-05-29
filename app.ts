@@ -1,19 +1,11 @@
-import express, { Request, Response } from 'express'
-import dotenv from 'dotenv'
+import server from './server'
 
-dotenv.config()
+(async () => {
+    const app = await server()
+    const PORT = process.env.PORT || 3000
 
-const app = express()
-const PORT = process.env.PORT
-
-app.get('/', (req: Request, res: Response) => {
-    res.status(200).json({
-        status: true,
-        message: 'Welcome to AuthSheild'
+    app.listen(PORT, () => {
+        console.log(`listening on port ${PORT}`)
     })
-})
 
-
-app.listen(PORT, () => {
-    console.log('Server listening on port ' + PORT)
-})
+})()
