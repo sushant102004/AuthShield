@@ -9,7 +9,7 @@ export class SignUpService {
             const password = req.body.password
 
             if (!email || !password) {
-                res.status(200).json({
+                res.status(400).json({
                     status: false,
                     message: 'Email or password not specified',
                     data: null
@@ -18,7 +18,7 @@ export class SignUpService {
 
             const newUser = await UserModel.create({ email, password })
 
-            res.status(200).json({
+            res.status(201).json({
                 status: true,
                 message: 'User created successfully',
                 data: newUser
