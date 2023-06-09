@@ -11,7 +11,8 @@ export class ErrorControllerClass extends ErrorClass {
         res.status(sCode).json({
             status: err.status,
             message: err.message,
-            err: err,
+            // err: err,
+            statusCode: err.statusCode,
             stack: err.stack
         })
 
