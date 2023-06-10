@@ -26,7 +26,7 @@ export class AdminCreate {
 
             res.status(200).json({
                 status: 'success',
-                message: 'Admin created successfully.',
+                message: 'Super Admin created successfully.',
                 data: newAdmin
             })
         } catch (err) {

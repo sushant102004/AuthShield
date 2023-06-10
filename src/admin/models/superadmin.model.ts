@@ -27,7 +27,7 @@ const AdminSchema = new Schema<ISuperAdmin>({
         type: String,
         trim: true,
         required: true,
-        default: 'admin'
+        default: 'SuperAdmin'
     }
 })
 
