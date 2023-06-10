@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose"
+import validator from "validator";
 
 interface IUser extends Document {
     name: string;
@@ -22,6 +23,12 @@ const userSchema = new mongoose.Schema<IUser>({
         trim: true,
         minlength: 3,
         maxlength: 30,
+        validate: {
+            validator: function (value: string) {
+                return validator.isAlpha(value)
+            },
+            message: 'Name can only contain alphabets and words.'
+        }
     },
 
     username: {
@@ -30,6 +37,7 @@ const userSchema = new mongoose.Schema<IUser>({
         trim: true,
         minlength: 3,
         maxlength: 30,
+        unique: true,
     },
 
     email: {
@@ -41,7 +49,9 @@ const userSchema = new mongoose.Schema<IUser>({
     password: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        minlength: 6,
+        maxlength: 30
     },
 
     lastPasswordChange: {
@@ -63,7 +73,6 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Date,
         default: undefined
     }
-
 })
 
 const User = mongoose.model<IUser>("User", userSchema)
