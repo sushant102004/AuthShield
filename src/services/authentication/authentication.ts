@@ -8,7 +8,6 @@ export class UserAuth {
     static async signUp(req: Request, res: Response, next: NextFunction) {
         try {
             let token = undefined
-
             const { name, username, email, password } = req.body
 
             if (!name || !username || !email || !password) {
@@ -25,6 +24,12 @@ export class UserAuth {
             } else {
                 token = sign(newUser.id, process.env.JWT_Secret)
             }
+
+            res.cookie('jwt', token, {
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                secure: true,
+                httpOnly: true
+            })
 
             res.status(200).json({
                 success: true,
