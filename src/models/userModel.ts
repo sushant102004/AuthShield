@@ -1,5 +1,6 @@
 import mongoose, { Document } from "mongoose"
 import validator from "validator";
+import bcrypt from 'bcryptjs'
 
 interface IUser extends Document {
     name: string;
@@ -10,6 +11,9 @@ interface IUser extends Document {
     lastLogin: Date;
     createdAt: Date;
     updatedAt: Date | undefined;
+    role: mongoose.Schema.Types.ObjectId,
+    otp: number,
+    status: string
 
     /*
         Extends this interface to add more properties to User model.
@@ -54,6 +58,20 @@ const userSchema = new mongoose.Schema<IUser>({
         maxlength: 30
     },
 
+    otp: Number,
+
+    status: {
+        type: String,
+        enum: ['logged-in', 'logged-out', 'suspended'],
+        default: 'logged-in'
+    },
+
+    role: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: '648548d14a9ab2d275826530',
+        ref: 'Role'
+    },
+
     lastPasswordChange: {
         type: String,
         default: undefined
@@ -73,6 +91,17 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Date,
         default: undefined
     }
+})
+
+
+userSchema.pre('save', async function (next: any) {
+    if (!this.isModified('password')) return next()
+
+    this.password = await bcrypt.hash(this.password, 8)
+    const OTP = Math.floor(1000 + Math.random() * 9000)
+    this.otp = OTP
+
+    next()
 })
 
 const User = mongoose.model<IUser>("User", userSchema)

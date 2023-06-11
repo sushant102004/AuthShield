@@ -18,7 +18,7 @@ export class UserAuth {
             const newUser = await User.create({ name, username, email, password })
 
 
-            // TODO:  Create new login document in database
+            // TODO:  Create new session document in database
 
             if (process.env.JWT_Secret == undefined) {
                 next(new ErrorClass('Server Side Error Code: 1080', '500'))
@@ -29,10 +29,12 @@ export class UserAuth {
             res.status(200).json({
                 success: true,
                 message: 'User created successfully.',
+                token: token,
                 data: {
                     id: newUser.id,
                     user: newUser.username,
-                    email: newUser.email
+                    email: newUser.email,
+                    role: newUser.role
                 }
             })
 
