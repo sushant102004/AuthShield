@@ -1,13 +1,13 @@
 import { Document, Schema, model } from 'mongoose'
 
-interface ISuperAdmin extends Document {
+interface IAdmin extends Document {
     name: string
     email: string
     password: string
     type: string
 }
 
-const AdminSchema = new Schema<ISuperAdmin>({
+const AdminSchema = new Schema<IAdmin>({
     name: {
         type: String,
         trim: true,
@@ -31,6 +31,6 @@ const AdminSchema = new Schema<ISuperAdmin>({
     }
 })
 
-const SuperAdmin = model<ISuperAdmin>('Admin', AdminSchema)
+const Admin = model<IAdmin>('Admin', AdminSchema)
 
-export default SuperAdmin
+export default Admin

@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import SuperAdmin from "../../models/superadmin.model";
+import Admin from "../../models/admin.model";
 import { ErrorClass } from "../../../utils/tools/errorClass";
 
 export class AdminCreate {
     static async createSuperAdmin(req: Request, res: Response, next: NextFunction) {
         try {
-            const superAdminCount = await SuperAdmin.countDocuments()
+            const superAdminCount = await Admin.countDocuments()
 
             if (superAdminCount > 0) {
                 next(new ErrorClass('Super Admin already exists.', '409'))
@@ -18,7 +18,7 @@ export class AdminCreate {
                 next(new ErrorClass('Invalid Input.', '400'))
             }
 
-            const newAdmin = await SuperAdmin.create({
+            const newAdmin = await Admin.create({
                 name: name,
                 email: email,
                 password: password,

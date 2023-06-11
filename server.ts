@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import { Logger } from './src/utils/loaders/Logger'
 import { DB } from './src/utils/loaders/Mongoose'
-import superAdminRouter from './src/admin/routes/superadmin.route'
+import superAdminRouter from './src/admin/routes/admin.route'
 import { ErrorControllerClass } from './src/utils/tools/errorController'
 import authRouter from './src/routes/auth.route'
 
