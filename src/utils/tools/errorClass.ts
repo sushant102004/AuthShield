@@ -1,13 +1,10 @@
 export class ErrorClass extends Error {
     message: string
-    statusCode: string
-    status: string
+    statusCode: number
 
-    constructor(message: string, statusCode: string) {
+    constructor(message: string, statusCode: number) {
         super(message)
         this.message = message
         this.statusCode = statusCode
-
-        this.status = statusCode.startsWith('4') ? 'fail' : 'error'
     }
 }

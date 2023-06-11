@@ -12,8 +12,9 @@ interface IUser extends Document {
     createdAt: Date;
     updatedAt: Date | undefined;
     role: mongoose.Schema.Types.ObjectId,
-    otp: number,
+    otp: number | undefined,
     status: string,
+    accountActive: string
     /*
         Extends this interface to add more properties to User model.
     */
@@ -61,8 +62,14 @@ const userSchema = new mongoose.Schema<IUser>({
 
     status: {
         type: String,
-        enum: ['logged-in', 'logged-out', 'suspended'],
+        enum: ['logged-in', 'logged-out'],
         default: 'logged-in'
+    },
+
+    accountActive: {
+        type: String,
+        enum: ['active', 'verification-pending', 'suspended'],
+        default: 'verification-pending'
     },
 
     role: {
@@ -102,6 +109,11 @@ userSchema.pre('save', async function (next: any) {
 
     next()
 })
+
+
+userSchema.methods.verifyOTP = async function (enteredOTP: number, otpInDB: number) {
+    return enteredOTP === otpInDB
+}
 
 const User = mongoose.model<IUser>("User", userSchema)
 

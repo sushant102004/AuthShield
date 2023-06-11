@@ -8,14 +8,14 @@ export class AdminCreate {
             const superAdminCount = await Admin.countDocuments()
 
             if (superAdminCount > 0) {
-                next(new ErrorClass('Super Admin already exists.', '409'))
+                next(new ErrorClass('Super Admin already exists.', 409))
                 return
             }
 
             const { name, email, password } = req.body
 
             if (!name || !email || !password) {
-                next(new ErrorClass('Invalid Input.', '400'))
+                next(new ErrorClass('Invalid Input.', 400))
             }
 
             const newAdmin = await Admin.create({

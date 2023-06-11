@@ -3,6 +3,7 @@ import { sign } from 'jsonwebtoken'
 import User from "../../models/userModel";
 import { ErrorClass } from "../../utils/tools/errorClass";
 import { sendOTP } from "./otpService/sendOTP";
+import { getUserFromToken } from "../../utils/tools/getUserFromToken";
 
 
 export class UserAuth {
@@ -20,7 +21,7 @@ export class UserAuth {
             // TODO:  Create new session document in database
 
             if (process.env.JWT_Secret == undefined) {
-                next(new ErrorClass('Server Side Error Code: 1080', '500'))
+                next(new ErrorClass('Server Side Error Code: 1080', 500))
             } else {
                 token = sign(newUser.id, process.env.JWT_Secret)
             }
@@ -52,6 +53,38 @@ export class UserAuth {
 
         } catch (err) {
             next(err)
+        }
+    }
+
+    static async verifyOTP(req: Request, res: Response, next: NextFunction) {
+        try {
+            const OTP = req.body.OTP
+
+            if (!OTP) return next(new ErrorClass('OTP not provided.', 400))
+
+            const user: any = await getUserFromToken(req, res, next)
+
+            if (user.accountActive == 'verification-pending') {
+                const isOTPValid: boolean = await user.verifyOTP(OTP, user.otp)
+
+                if (isOTPValid) {
+                    await user.updateOne({ accountActive: 'active' })
+
+                    res.status(200).json({
+                        success: true,
+                        message: 'OTP verified successfully.',
+                    })
+                } else {
+                    return next(new ErrorClass('Invalid OTP.', 400))
+                }
+            } else {
+                return next(new ErrorClass('Your account is already verified.', 400))
+            }
+
+
+        } catch (err) {
+            next(err)
+            return
         }
     }
 }
