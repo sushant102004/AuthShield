@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { sign } from 'jsonwebtoken'
 import User from "../../models/userModel";
 import { ErrorClass } from "../../utils/tools/errorClass";
+import { sendOTP } from "./otpService/sendOTP";
 
 
 export class UserAuth {
@@ -16,7 +17,6 @@ export class UserAuth {
 
             const newUser = await User.create({ name, username, email, password })
 
-
             // TODO:  Create new session document in database
 
             if (process.env.JWT_Secret == undefined) {
@@ -24,6 +24,13 @@ export class UserAuth {
             } else {
                 token = sign(newUser.id, process.env.JWT_Secret)
             }
+
+            /*
+                Uncomment below line to activate OTP funtionality
+                
+                sendOTP(newUser.email, newUser.otp, next)
+            */
+
 
             res.cookie('jwt', token, {
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),

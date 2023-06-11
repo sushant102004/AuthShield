@@ -13,8 +13,7 @@ interface IUser extends Document {
     updatedAt: Date | undefined;
     role: mongoose.Schema.Types.ObjectId,
     otp: number,
-    status: string
-
+    status: string,
     /*
         Extends this interface to add more properties to User model.
     */
@@ -90,7 +89,7 @@ const userSchema = new mongoose.Schema<IUser>({
     updatedAt: {
         type: Date,
         default: undefined
-    }
+    },
 })
 
 
