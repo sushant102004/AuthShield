@@ -32,6 +32,8 @@ export class UserAuth {
                 sendOTP(newUser.email, newUser.otp, next)
             */
 
+            req.user = newUser
+
 
             res.cookie('jwt', token, {
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -78,6 +80,7 @@ export class UserAuth {
                     return next(new ErrorClass('Invalid OTP.', '400'))
                 }
             } else {
+                req.user = user
                 return next(new ErrorClass('Your account is already verified.', '400'))
             }
 
@@ -109,6 +112,8 @@ export class UserAuth {
                 token = sign(user.id, process.env.JWT_Secret)
             }
 
+            req.user = user
+
             res.cookie('jwt', token, {
                 expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
                 secure: true,
@@ -130,5 +135,11 @@ export class UserAuth {
         } catch (err) {
             return next(err)
         }
+    }
+
+    // This function will prevent un-authenticated users from accessing APIs endpoints.
+    static async protectLogin(req: Request, res: Response, next: NextFunction) {
+        console.log('Triggered')
+        next()
     }
 }
