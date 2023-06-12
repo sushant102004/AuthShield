@@ -55,7 +55,8 @@ const userSchema = new mongoose.Schema<IUser>({
         required: true,
         trim: true,
         minlength: 6,
-        maxlength: 30
+        maxlength: 30,
+        select: false
     },
 
     otp: Number,
@@ -110,6 +111,10 @@ userSchema.pre('save', async function (next: any) {
     next()
 })
 
+
+userSchema.methods.checkPassword = async function (enteredPassword: string) {
+    return await bcrypt.compare(enteredPassword, this.password)
+}
 
 userSchema.methods.verifyOTP = async function (enteredOTP: number, otpInDB: number) {
     return enteredOTP === otpInDB

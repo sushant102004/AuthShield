@@ -7,7 +7,7 @@ export const getUserFromToken = async (req: Request, res: Response, next: NextFu
     const token = req.headers.authorization?.split(' ')[1]
 
     if (token == undefined) {
-        next(new ErrorClass('Authentication token is invald', 401))
+        next(new ErrorClass('Authentication token is invald', '401'))
         return
     }
 
@@ -17,13 +17,13 @@ export const getUserFromToken = async (req: Request, res: Response, next: NextFu
         const user = await User.findOne({ id: decoded.id });
 
         if (!user) {
-            return next(new ErrorClass('User not found', 404))
+            return next(new ErrorClass('User not found', '404'))
         }
 
         return user
 
     } else {
-        next(new ErrorClass('Internal Server Error. Code 1080', 401))
+        next(new ErrorClass('Internal Server Error. Code 1080', '401'))
         return
     }
 }
